@@ -1,0 +1,5 @@
+@model SpiceGarden.Models.Order
+@{
+    ViewData["Title"] = $"Order #{Model.Id}";
+}
+<div class="container py-4"><h1 class="display-5 fw-bold">Order #@Model.Id</h1><div class="row g-4"><div class="col-lg-7"><div class="card"><div class="card-body"><h4>Items</h4>@foreach(var item in Model.OrderItems){<div class="d-flex justify-content-between mb-2"><span>@item.Quantity × @item.MenuItem.Name</span><strong>₹@item.Subtotal</strong></div>}<hr /><div class="d-flex justify-content-between"><strong>Total</strong><strong>₹@Model.TotalAmount</strong></div></div></div></div><div class="col-lg-5"><div class="card"><div class="card-body"><h4>Delivery</h4><p><strong>Date:</strong> @Model.OrderDate.ToString("dd MMM yyyy, hh:mm tt")</p><p><strong>Status:</strong> <span class="badge bg-warning text-dark">@Model.Status</span></p><p><strong>Address:</strong><br />@Model.DeliveryAddress</p></div></div></div></div><a class="btn btn-dark mt-3" asp-action="Index">Back to orders</a></div>

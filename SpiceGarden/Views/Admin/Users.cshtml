@@ -1,0 +1,5 @@
+@model IEnumerable<SpiceGarden.Models.User>
+@{
+    ViewData["Title"] = "View Users";
+}
+<div class="container py-4"><h1 class="display-5 fw-bold">Users</h1><div class="table-responsive"><table class="table"><thead><tr><th>Name</th><th>Email</th><th>Role</th></tr></thead><tbody>@foreach(var user in Model){<tr><td>@user.Name</td><td>@user.Email</td><td>@user.Role</td></tr>}</tbody></table></div></div>

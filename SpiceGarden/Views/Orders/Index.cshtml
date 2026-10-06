@@ -1,0 +1,6 @@
+@model IEnumerable<SpiceGarden.Models.Order>
+@{
+    ViewData["Title"] = "My Orders";
+}
+<div class="container py-4"><h1 class="display-5 fw-bold">My orders</h1>@if(!Model.Any()){<div class="alert alert-info">You have not placed an order yet.</div>}else{<div class="table-responsive"><table class="table table-hover"><thead><tr><th>Order</th><th>Date</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>@foreach(var order in Model){<tr><td>#@order.Id</td><td>@order.OrderDate.ToString("dd MMM yyyy, hh:mm tt")</td><td>₹@order.TotalAmount</td><td><span class="badge @GetStatusClass(order.Status)">@order.Status</span></td><td><a asp-action="Details" asp-route-id="@order.Id">View details</a></td></tr>}</tbody></table></div>}</div>
+@functions { string GetStatusClass(string status) => status switch { "Pending" => "bg-warning text-dark", "Preparing" => "bg-info", "Ready" => "bg-primary", "Completed" => "bg-success", "Cancelled" => "bg-danger", _ => "bg-secondary" }; }

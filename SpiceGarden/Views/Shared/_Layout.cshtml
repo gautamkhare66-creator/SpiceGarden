@@ -1,0 +1,72 @@
+﻿@using System.Security.Claims
+@{
+    var currentUser = User.FindFirstValue(ClaimTypes.Name);
+    var isAdmin = User.IsInRole("Admin");
+    var cartCount = SpiceGarden.Services.CartService.GetItemCount(Context);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SpiceGarden</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="bg-cream text-dark">
+    <header class="site-header sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-dark py-3">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" asp-controller="Home" asp-action="Index"><i class="bi bi-flower1 text-gold"></i> SpiceGarden</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav mx-auto gap-lg-2">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Menu" asp-action="Index">Menu</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Reservation" asp-action="Index">Reservations</a></li>
+                        @if (isAdmin) { <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Index">Admin</a></li> }
+                    </ul>
+                    <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <div class="dropdown">
+                                <button class="btn btn-outline-gold dropdown-toggle" data-bs-toggle="dropdown">@currentUser</button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    @if (!isAdmin) { <li><a class="dropdown-item" asp-controller="Orders" asp-action="Index">My Orders</a></li> }
+                                    <li><form asp-controller="Account" asp-action="Logout" method="post"><button class="dropdown-item" type="submit">Log out</button></form></li>
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-gold btn-sm" asp-controller="Account" asp-action="Login">Login</a>
+                            <a class="btn btn-gold btn-sm" asp-controller="Account" asp-action="Register">Join us</a>
+                        }
+                        <a class="btn btn-gold position-relative" asp-controller="Cart" asp-action="Index" aria-label="Shopping cart"><i class="bi bi-cart3"></i><span class="badge bg-light text-dark position-absolute top-0 start-100 translate-middle">@cartCount</span></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="container py-4">
+        @if (TempData["Success"] is string success) { <div class="alert alert-success" role="alert">@success</div> }
+        @RenderBody()
+    </main>
+    <footer class="site-footer text-white mt-auto">
+        <div class="container py-5">
+            <div class="row g-4">
+                <div class="col-lg-4"><h3 class="fw-bold"><i class="bi bi-flower1 text-gold"></i> SpiceGarden</h3><p class="text-white-50">Fresh Indian flavours, honest ingredients, and warm hospitality.</p></div>
+                <div class="col-lg-2"><h6>Explore</h6><a class="d-block text-white-50" asp-controller="Menu" asp-action="Index">Our Menu</a><a class="d-block text-white-50" asp-controller="Reservation" asp-action="Index">Reservations</a></div>
+                <div class="col-lg-2"><h6>Account</h6><a class="d-block text-white-50" asp-controller="Account" asp-action="Login">Login</a><a class="d-block text-white-50" asp-controller="Account" asp-action="Register">Register</a></div>
+                <div class="col-lg-4"><h6>Contact</h6><p class="text-white-50 mb-1">hello@spicegarden.in</p><p class="text-white-50">+91 98765 43210</p></div>
+            </div>
+            <hr class="my-4 border-white-25" />
+            <p class="text-white-50 mb-0">&copy; @DateTime.Now.Year SpiceGarden. Built for a beautiful college project.</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,5 @@
+@model SpiceGarden.Models.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="container py-5"><div class="row justify-content-center"><div class="col-lg-5"><div class="card shadow-sm"><div class="card-body p-4"><span class="eyebrow eyebrow-dark">Welcome back</span><h1 class="display-5 fw-bold">Log in to SpiceGarden</h1><form asp-action="Login" method="post"><div asp-validation-summary="All" class="text-danger"></div><div class="mb-3"><label asp-for="Email" class="form-label"></label><input asp-for="Email" class="form-control" autocomplete="email" /><span asp-validation-for="Email" class="text-danger"></span></div><div class="mb-3"><label asp-for="Password" class="form-label"></label><input asp-for="Password" class="form-control" autocomplete="current-password" /><span asp-validation-for="Password" class="text-danger"></span></div><label class="form-check mb-3"><input asp-for="RememberMe" class="form-check-input" /> Remember me</label><button class="btn btn-dark w-100" type="submit">Log in</button></form><p class="text-muted small mt-3 mb-0">New here? <a asp-action="Register">Create an account</a></p></div></div></div></div></div>

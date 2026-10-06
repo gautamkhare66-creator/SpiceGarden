@@ -1,0 +1,5 @@
+@model IEnumerable<SpiceGarden.Models.MenuItem>
+@{
+    ViewData["Title"] = "Manage Menu";
+}
+<div class="container py-4"><div class="d-flex justify-content-between"><h1 class="display-5 fw-bold">Menu items</h1><a class="btn btn-gold" asp-action="AddMenuItem">Add item</a></div><div class="table-responsive"><table class="table"><thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Available</th><th>Actions</th></tr></thead><tbody>@foreach(var item in Model){<tr><td>@item.Name</td><td>@item.Category.Name</td><td>₹@item.Price</td><td>@item.IsAvailable</td><td><a asp-action="EditMenuItem" asp-route-id="@item.Id" class="me-2">Edit</a><form asp-action="DeleteMenuItem" method="post" class="d-inline"><input type="hidden" name="id" value="@item.Id" /><button class="btn btn-link text-danger p-0" type="submit">Delete</button></form></td></tr>}</tbody></table></div></div>

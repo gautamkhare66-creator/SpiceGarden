@@ -1,0 +1,13 @@
+@using SpiceGarden.Models
+@using SpiceGarden.Models.ViewModels
+@model MenuSearchViewModel
+@{
+    var categories = (IEnumerable<Category>)ViewData["Categories"]!;
+    var items = (IEnumerable<MenuItem>)ViewData["MenuItems"]!;
+}
+<section class="page-hero"><div class="container py-5"><span class="eyebrow">Our menu</span><h1 class="display-5 fw-bold text-white">Find your next favourite dish</h1><p class="text-white-50">Fresh flavours, generous portions, and clear availability.</p></div></section>
+<div class="container py-4">
+    <form asp-action="Index" method="get" class="row g-3 mb-4"><div class="col-md-4"><label class="form-label">Search</label><input asp-for="Search" class="form-control" placeholder="Search dishes" /></div><div class="col-md-5"><label class="form-label">Category</label><select asp-for="CategoryId" class="form-select"><option value="">All categories</option>@foreach(var category in categories){<option value="@category.Id">@category.Name</option>}</select></div><div class="col-md-3 d-flex align-items-end"><button class="btn btn-dark w-100" type="submit">Filter</button></div></form>
+    @if (!items.Any()) { <div class="alert alert-info">No dishes match your search.</div> }
+    else { <div class="row g-4">@foreach(var item in items){<div class="col-md-6 col-lg-4"><div class="card menu-card h-100"><div class="menu-image-wrap"><img src="@item.ImageUrl" alt="@item.Name" class="menu-image" /><span class="badge bg-success position-absolute top-3 start-3">@item.Category.Name</span></div><div class="card-body"><h4>@item.Name</h4><p class="text-muted small min-height-48">@item.Description</p><div class="d-flex justify-content-between align-items-center"><strong class="text-primary">₹@item.Price</strong><form asp-controller="Menu" asp-action="AddToCart" method="post"><input type="hidden" name="menuItemId" value="@item.Id" /><button class="btn btn-gold btn-sm" type="submit" disabled="@(!item.IsAvailable)">@(item.IsAvailable ? "Add" : "Unavailable")</button></form></div></div></div></div>}</div> }
+</div>
